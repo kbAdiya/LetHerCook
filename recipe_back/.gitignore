@@ -20,3 +20,9 @@ media/
 # Mac/Windows extra files
 .DS_Store
 Thumbs.db
+
+
+# ignore large files
+recipe_back/db.sqlite3
+recipes_raw_nosource_fn.json
+recipes_raw_nosource_epi.json

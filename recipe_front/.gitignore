@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# ignore large files
+recipe_back/db.sqlite3
+recipes_raw_nosource_fn.json
+recipes_raw_nosource_epi.json
+

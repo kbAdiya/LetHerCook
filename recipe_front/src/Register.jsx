@@ -12,12 +12,24 @@ function Register() {
     fetch("http://127.0.0.1:8000/api/users/register/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ username, password }),
     })
-      .then(res => res.json())
-      .then(data => {
-        alert("Account created! Please login.");
-        navigate("/login");
+      .then(res => {
+        return res.json().then(data => {
+          if (res.ok) {
+            if (data.success || data.message) {
+              alert("Успешно зарегистрирован! Пожалуйста, войдите.");
+              navigate("/login");
+            }
+          } else {
+            alert(data.error || "Ошибка при регистрации");
+          }
+        });
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("Ошибка при регистрации. Попробуйте еще раз.");
       });
   }
 

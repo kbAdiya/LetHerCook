@@ -15,14 +15,20 @@ function Login() {
       credentials: "include",
       body: JSON.stringify({ username, password }),
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.username) {
-          localStorage.setItem("username", data.username);
-          navigate("/home");
-        } else {
-          alert("Invalid credentials");
-        }
+      .then(res => {
+        return res.json().then(data => {
+          if (res.ok && data.success && data.username) {
+            localStorage.setItem("username", data.username);
+            alert("Успешно вошли!");
+            window.location.href = "/home";
+          } else {
+            alert(data.error || "Неверные учетные данные");
+          }
+        });
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("Ошибка при входе. Попробуйте еще раз.");
       });
   }
 

@@ -1,0 +1,49 @@
+import logo from "./assets/logo.png";
+import youtubeIcon from "./assets/icons/youtube.svg";
+import twitterIcon from "./assets/icons/twitter.svg";
+import instagramIcon from "./assets/icons/instagram.svg";
+import pinterestIcon from "./assets/icons/pinterest.svg";
+import "./styles/footer.css";
+
+const SOCIAL_LINKS = [
+  { label: "YouTube", href: "https://youtube.com", icon: youtubeIcon },
+  { label: "Twitter", href: "https://twitter.com", icon: twitterIcon },
+  { label: "Instagram", href: "https://instagram.com", icon: instagramIcon },
+  { label: "Pinterest", href: "https://pinterest.com", icon: pinterestIcon },
+];
+
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-content">
+        <div className="footer-brand">
+          <img src={logo} alt="LetHerCook logo" className="footer-logo" />
+          <div>
+            <div className="footer-brand-name">LetHerCook</div>
+            <p className="footer-brand-copy">Discover recipes built for the ingredients you already have.</p>
+          </div>
+        </div>
+
+        <div className="footer-info">
+          <div className="footer-section-title">Information:</div>
+          <div className="footer-socials">
+            {SOCIAL_LINKS.map(({ label, href, icon }) => (
+              <a key={label} href={href} className="footer-social" target="_blank" rel="noreferrer" aria-label={label}>
+                <img src={icon} alt="" />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div className="footer-contact">
+          <div className="footer-section-title">Contact us</div>
+          <div className="footer-contact-detail">lethercook@gmail.com</div>
+          <div className="footer-contact-detail">+7 777 665 8543</div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default Footer;
+

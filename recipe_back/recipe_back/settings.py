@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-d#cow^!%z-7vfylfdo51_41lquj&(_pcc8e1ag66tz$*9vdw!)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']  # Allow all hosts in development
 
 
 # Application definition
@@ -82,8 +82,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+     "recipes_db": {
+         "ENGINE": "django.db.backends.sqlite3",
+         "NAME": r"C:\Users\baurs\Desktop\LetHerCook\db\recipes.db",
+     }
 }
+
+DATABASE_ROUTERS = ['recipe_back.dbrouters.RecipesRouter']
 
 
 # Password validation
@@ -95,6 +101,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 12,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -129,7 +138,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
+
+# Allow all origins in development (remove in production)
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 

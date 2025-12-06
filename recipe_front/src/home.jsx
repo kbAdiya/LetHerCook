@@ -24,13 +24,65 @@ function Home() {
   }, [username, navigate]);
 
   useEffect(() => {
+    // Load initial recipes when component mounts
     if (prefillIngredients.length) {
       setIngredients(prefillIngredients);
       // Run initial search with prefilled ingredients
       searchRecipes(prefillIngredients, diet, cuisine, maxTime);
+    } else {
+      // Load initial recipes without search
+      loadInitialRecipes();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Reload recipes when cuisine changes (if no ingredients)
+  useEffect(() => {
+    if (ingredients.length === 0 && !loading) {
+      loadInitialRecipes();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cuisine]);
+
+  async function loadInitialRecipes() {
+    setLoading(true);
+    setError("");
+    try {
+      let url = "http://127.0.0.1:8000/api/recipes/?limit=100&offset=0";
+      // Add cuisine filter if selected
+      if (cuisine) {
+        url += `&cuisine=${encodeURIComponent(cuisine)}`;
+      }
+      
+      const res = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        let errorMessage = `Failed to fetch recipes (Status: ${res.status})`;
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error || errorData.message || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+
+      const data = await res.json();
+      setRecipes(data.results || []);
+    } catch (e) {
+      console.error("Error fetching recipes:", e);
+      const errorMsg = e.message || "Failed to load recipes. Please check if the backend server is running at http://127.0.0.1:8000";
+      setError(errorMsg);
+      setRecipes([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   function addIngredient(e) {
     e.preventDefault();
@@ -79,42 +131,53 @@ function Home() {
     setLoading(true);
     setError("");
     try {
-      // Fetch all recipes from backend
-      let url = "http://127.0.0.1:8000/api/recipes/";
-      const params = new URLSearchParams();
+      let data;
       
-      // Add search query if ingredients are provided
+      // If ingredients are provided, use the ingredient search endpoint
       if (selectedIngredients.length > 0) {
-        params.append('search', selectedIngredients.join(' '));
+        const res = await fetch("http://127.0.0.1:8000/api/recipes/search-by-ingredients/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            ingredients: selectedIngredients,
+            cuisine: c || null,
+            category: null, // Can add category filter later if needed
+            vegetarian: d === 'vegetarian' || d === 'vegan',
+          }),
+        });
+        
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Failed to search recipes");
+        }
+        
+        data = await res.json();
+      } else {
+        // Otherwise, just fetch recipes normally with filters
+        let url = "http://127.0.0.1:8000/api/recipes/?limit=100&offset=0";
+        if (c) {
+          url += `&cuisine=${encodeURIComponent(c)}`;
+        }
+        const res = await fetch(url, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+        
+        if (!res.ok) throw new Error("Failed to fetch recipes");
+        data = await res.json();
       }
       
-      // Add source filter if needed (optional)
-      if (params.toString()) {
-        url += '?' + params.toString();
-      }
-      
-      const res = await fetch(url, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-      
-      if (!res.ok) throw new Error("Failed to fetch recipes");
-      
-      const data = await res.json();
       // Handle paginated response (DRF returns {results: [...]}) or direct array
       let allRecipes = Array.isArray(data) ? data : (data.results || []);
-      
-      // Filter recipes client-side based on ingredients, diet, cuisine, time
-      if (selectedIngredients.length > 0 || d || c || t) {
-        allRecipes = filterLocal(allRecipes, selectedIngredients, d, c, t);
-      }
       
       // Limit to first 100 recipes for display (to avoid overwhelming the UI)
       setRecipes(allRecipes.slice(0, 100));
     } catch (e) {
       console.error("Error fetching recipes:", e);
-      setError("Failed to load recipes. Please try again.");
+      const errorMsg = e.message || "Failed to load recipes. Please check if the backend server is running at http://127.0.0.1:8000";
+      setError(errorMsg);
       setRecipes([]);
     } finally {
       setLoading(false);
@@ -127,6 +190,48 @@ function Home() {
     } catch (_) {}
     localStorage.clear();
     navigate("/login");
+  }
+
+  async function handleLike(recipe, e) {
+    e.stopPropagation(); // Prevent card click
+    
+    if (!username) {
+      alert("Please log in to like recipes");
+      navigate("/login");
+      return;
+    }
+    
+    const recipeId = recipe.id;
+    const isFavorited = recipe.is_favorited || false;
+    
+    try {
+      const endpoint = isFavorited ? 'unlike' : 'like';
+      const res = await fetch(`http://127.0.0.1:8000/api/recipes/${recipeId}/${endpoint}/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+      
+      if (res.ok) {
+        // Update the recipe in the recipes array
+        setRecipes(recipes.map(r => 
+          r.id === recipeId 
+            ? { ...r, is_favorited: !isFavorited }
+            : r
+        ));
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        if (res.status === 403 || res.status === 401) {
+          alert("Please log in to like recipes");
+          navigate("/login");
+        } else {
+          alert(errorData.error || "Failed to update favorite");
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error updating favorite. Please try again.");
+    }
   }
 
   return (
@@ -166,9 +271,12 @@ function Home() {
         </select>
         <select value={cuisine} onChange={(e) => setCuisine(e.target.value)} style={{ padding: 10, borderRadius: 8, border: "1px solid #ddd" }}>
           <option value="">Any cuisine</option>
-          <option value="italian">Italian</option>
-          <option value="indian">Indian</option>
-          <option value="global">Global</option>
+          <option value="Italian">Italian</option>
+          <option value="Indian">Indian</option>
+          <option value="Global">Global</option>
+          <option value="Mexican">Mexican</option>
+          <option value="Asian">Asian</option>
+          <option value="American">American</option>
         </select>
         <input
           type="number"
@@ -180,42 +288,103 @@ function Home() {
         />
       </div>
 
-      <button onClick={() => searchRecipes()} disabled={loading} style={{ marginTop: 14, width: "100%", padding: "10px 14px", borderRadius: 8, border: 0, background: loading ? "#9bd3f5" : "#0ea5e9", color: "white" }}>
-        {loading ? "Searching…" : "Find recipes"}
+      <button onClick={() => {
+        if (ingredients.length > 0) {
+          searchRecipes();
+        } else {
+          // If no ingredients, just reload with current filters
+          loadInitialRecipes();
+        }
+      }} disabled={loading} style={{ marginTop: 14, width: "100%", padding: "10px 14px", borderRadius: 8, border: 0, background: loading ? "#9bd3f5" : "#0ea5e9", color: "white" }}>
+        {loading ? "Searching…" : ingredients.length > 0 ? "Find recipes" : "Apply Filters"}
       </button>
 
       {error && <div style={{ marginTop: 10, color: "#a16207" }}>{error}</div>}
 
+      <div style={{ marginTop: 20, display: "flex", gap: 12, marginBottom: 12 }}>
+        <button 
+          onClick={() => navigate("/favorites")}
+          style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #ddd", background: "white", cursor: "pointer" }}
+        >
+          View Favorites
+        </button>
+        <button 
+          onClick={() => navigate("/recipes")}
+          style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #ddd", background: "white", cursor: "pointer" }}
+        >
+          Browse All Recipes
+        </button>
+        <button 
+          onClick={() => navigate("/ingredient-search")}
+          style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #ddd", background: "white", cursor: "pointer" }}
+        >
+          Search by Ingredients
+        </button>
+      </div>
+
+      {loading && (
+        <div style={{ textAlign: "center", padding: 40, color: "#666" }}>
+          Loading recipes...
+        </div>
+      )}
+
       <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 12 }}>
         {recipes.length === 0 && !loading && (
           <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: 40, color: "#666" }}>
-            No recipes found. Try adding ingredients or adjusting your filters.
+            No recipes found. Try adding ingredients or adjusting your filters, or click "Browse All Recipes" to see all recipes.
           </div>
         )}
         {recipes.map((r) => (
-          <div key={r.id || r.recipe_id || r.title} style={{ border: "1px solid #eee", borderRadius: 12, padding: 12, cursor: "pointer" }}>
-            <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 8 }}>{r.title}</div>
-            <div style={{ color: "#666", marginBottom: 8, fontSize: 12 }}>
-              {r.source && `Source: ${r.source.toUpperCase()}`}
+          <div key={r.id} style={{ border: "1px solid #eee", borderRadius: 12, padding: 12, position: "relative", cursor: "pointer" }}
+               onClick={() => navigate(`/recipe/${r.id}`)}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: 8 }}>
+              <div style={{ fontWeight: 600, fontSize: 16, flex: 1 }}>{r.recipe_name}</div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleLike(r, e);
+                }}
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  fontSize: 20,
+                  padding: "4px 8px",
+                  color: r.is_favorited ? "#ef4444" : "#ccc"
+                }}
+                title={r.is_favorited ? "Unlike" : "Like"}
+              >
+                {r.is_favorited ? "❤️" : "🤍"}
+              </button>
             </div>
-            {Array.isArray(r.ingredients) && r.ingredients.length > 0 && (
-              <div style={{ marginTop: 8 }}>
-                <div style={{ fontSize: 12, color: "#888", marginBottom: 4 }}>Ingredients:</div>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", maxHeight: 100, overflow: "hidden" }}>
-                  {r.ingredients.slice(0, 5).map((i, idx) => (
-                    <span key={idx} style={{ padding: "4px 8px", border: "1px solid #eee", borderRadius: 999, fontSize: 11 }}>{i}</span>
-                  ))}
-                  {r.ingredients.length > 5 && (
-                    <span style={{ padding: "4px 8px", color: "#666", fontSize: 11 }}>+{r.ingredients.length - 5} more</span>
-                  )}
-                </div>
+            {r.category && (
+              <div style={{ color: "#666", marginBottom: 4, fontSize: 12 }}>
+                Category: {r.category}
               </div>
             )}
-            {r.instructions && (
-              <div style={{ marginTop: 8, fontSize: 12, color: "#666", maxHeight: 60, overflow: "hidden", textOverflow: "ellipsis" }}>
-                {r.instructions.substring(0, 100)}...
+            {r.cuisine_path && (
+              <div style={{ color: "#666", marginBottom: 8, fontSize: 12 }}>
+                Cuisine: {r.cuisine_path}
               </div>
             )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/recipe/${r.id}`);
+              }}
+              style={{
+                marginTop: 12,
+                padding: "8px 16px",
+                borderRadius: 8,
+                border: "none",
+                background: "#0ea5e9",
+                color: "white",
+                cursor: "pointer",
+                width: "100%",
+              }}
+            >
+              Show Recipe
+            </button>
           </div>
         ))}
       </div>

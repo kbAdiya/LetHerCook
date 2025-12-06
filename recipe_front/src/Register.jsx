@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "./styles/auth.css"
 function Register() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const navigate = useNavigate();
 
   function handleRegister(e) {
@@ -13,7 +15,12 @@ function Register() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ 
+        username, 
+        email, 
+        password, 
+        password_confirm: passwordConfirm 
+      }),
     })
       .then(res => {
         return res.json().then(data => {
@@ -45,10 +52,24 @@ function Register() {
           required
         />
         <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+        />
+        <input
           type="password"
-          placeholder="Password"
+          placeholder="Password (min 12 chars, uppercase, lowercase, number, special)"
           value={password}
           onChange={e => setPassword(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          value={passwordConfirm}
+          onChange={e => setPasswordConfirm(e.target.value)}
           required
         />
         <button type="submit">Register</button>

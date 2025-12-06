@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import Login from "./Login";
 import Register from "./Register";
 import Landing from "./Landing";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+<<<<<<< HEAD
 import Home from "./home"
 import Favorites from "./Favorites"
 import HomePage from "./HomePage"
@@ -12,10 +12,15 @@ import IngredientSearchPage from "./IngredientSearchPage"
 import ApiTest from "./ApiTest"
 import './App.css'
 
+=======
+import "./App.css";
+import AboutPage from "./About"
+>>>>>>> 177f009d82524a8d8cf2f5fd0243bbeedbc89bdc
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
+<<<<<<< HEAD
       <div>
     <Router>
       <Routes>
@@ -33,9 +38,20 @@ function App() {
         <Route path="/api-test" element={<ApiTest />} />
       </Routes>
     </Router>
+=======
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/home" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+           <Route path="/about" element={<AboutPage />} />
+        </Routes>
+      </Router>
+>>>>>>> 177f009d82524a8d8cf2f5fd0243bbeedbc89bdc
     </div>
-
-  )
+  );
 }
 
-export default App
+export default App;

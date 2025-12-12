@@ -13,6 +13,16 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
         fields = ['id', 'name', 'is_meat']
 
+    def validate_name(self, value):
+        # нормализуем имя
+        normalized = value.strip().capitalize()
+
+        # проверяем уникальность без учета регистра
+        if Ingredient.objects.filter(name__iexact=normalized).exists():
+            raise serializers.ValidationError("Ингредиент с таким именем уже существует")
+
+        return normalized
+
 # --- RecipeIngredient ---
 class RecipeIngredientSerializer(serializers.ModelSerializer):
     ingredient = IngredientSerializer(read_only=True)

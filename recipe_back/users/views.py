@@ -6,6 +6,11 @@ from django.contrib.auth import logout
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 import re
+from django.middleware.csrf import get_token
+
+@api_view(['GET'])
+def get_csrf(request):
+    return Response({"csrfToken": get_token(request)})
 
 def validate_password(password):
     """Validate password meets requirements"""

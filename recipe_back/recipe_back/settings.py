@@ -49,7 +49,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'users.middleware.DisableCSRFForAPI',  # Disable CSRF for API endpoints
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -166,3 +165,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer', 
     ],
 }
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False

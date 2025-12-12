@@ -1,59 +1,49 @@
 from django.db import models
-from django.contrib.auth.models import User
 
-class Recipe(models.Model):
-    id = models.IntegerField(primary_key=True)
-    recipe_name = models.TextField()
-    prep_time = models.TextField(null=True)  # Changed to TextField to handle "30 mins" format
-    cook_time = models.TextField(null=True)  # Changed to TextField to handle "30 mins" format
-    total_time = models.TextField(null=True)  # Changed to TextField to handle "30 mins" format
-    servings = models.IntegerField(null=True)
-    rating = models.FloatField(null=True)
-    url = models.TextField(null=True)
-    cuisine_path = models.TextField(null=True)
-    category = models.TextField(null=True)  # категория блюд
-    class Meta:
-        db_table = "recipes"
-        app_label = "recipes"
+from django.db import models
 
-class Ingredient(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.TextField()
-    class Meta:
-        db_table = "ingredients"
-        app_label = "recipes"
-
-class RecipeIngredient(models.Model):
-    id = models.IntegerField(primary_key=True)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    raw_text = models.TextField()
-    class Meta:
-        db_table = "recipe_ingredients"
-        app_label = "recipes"
-
-class Direction(models.Model):
-    id = models.IntegerField(primary_key=True)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    step_number = models.IntegerField()
-    instruction = models.TextField()
-    class Meta:
-        db_table = "directions"
-        app_label = "recipes"
-
-
-class Favorite(models.Model):
-    """Model to store user's favorite recipes"""
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorited_by')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ['user', 'recipe']
-        ordering = ['-created_at']
-        indexes = [
-            models.Index(fields=['user', 'recipe']),
-        ]
+class Category(models.Model):
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.user.username} likes {self.recipe.recipe_name}"
+        return self.name
+
+class Ingredient(models.Model):
+    name = models.CharField(max_length=100)
+    is_meat = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+class Recipe(models.Model):
+    name = models.CharField(max_length=200)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    photo = models.URLField(max_length=500, null=True, blank=True)  # ссылка на картинку
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def is_vegan(self):
+       
+        return not self.recipe_ingredients.filter(ingredient__is_meat=True).exists()
+
+class RecipeIngredient(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='recipe_ingredients')
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name='ingredient_recipes')
+    quantity = models.CharField(max_length=100, null=True, blank=True)  # например, "2 столовые ложки", "500 г"
+
+    class Meta:
+        unique_together = ('recipe', 'ingredient')
+
+    def __str__(self):
+        return f"{self.recipe.name} - {self.ingredient.name} ({self.quantity})"
+
+class Direction(models.Model):
+    recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE, related_name='direction')
+    instruction = models.TextField()
+
+    def __str__(self):
+        return f"{self.recipe.name} - instruction"
+

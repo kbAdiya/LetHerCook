@@ -1,14 +1,14 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import RecipeViewSet, categories_list, test_db_connection, health_check
+from .views import RecipeViewSet, IngredientViewSet, CategoryViewSet, RecipeIngredientViewSet, DirectionViewSet
 
 router = DefaultRouter()
-router.register(r'recipes', RecipeViewSet, basename='recipe')
+router.register('recipes', RecipeViewSet)
+router.register('ingredients', IngredientViewSet)
+router.register('categories', CategoryViewSet)
+router.register('recipe-ingredients', RecipeIngredientViewSet)
+router.register('directions', DirectionViewSet)
 
 urlpatterns = [
-    path('health/', health_check, name='health'),
-    path('categories/', categories_list, name='categories'),
-    path('test-db/', test_db_connection, name='test-db'),
     path('', include(router.urls)),
 ]
-

@@ -38,9 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
-    'recipes',
     'rest_framework',
     'corsheaders',
+    'recipes',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -82,14 +83,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    },
-     "recipes_db": {
-         "ENGINE": "django.db.backends.sqlite3",
-         "NAME": r"C:\Users\baurs\Desktop\LetHerCook\db\recipes.db",
-     }
+    } 
 }
 
-DATABASE_ROUTERS = ['recipe_back.dbrouters.RecipesRouter']
+
 
 
 # Password validation
@@ -161,5 +158,11 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', 
+                                'rest_framework.filters.SearchFilter'],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer', 
     ],
 }

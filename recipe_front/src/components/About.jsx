@@ -1,15 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import "./styles/about.css";
-import aboutimg from"./assets/image 1.png"
+
+import "../styles/about.css";
+import aboutimg from"../assets/image 1.png"
 
 function About() {
 
 
   return (
     <div className="about-page">
-      <Navbar/>
+     
 
       <main className="about-main">
         <section className="about-hero">
@@ -28,7 +27,7 @@ function About() {
         </section>
       </main>
 
-      <Footer />
+      
     </div>
   );
 }

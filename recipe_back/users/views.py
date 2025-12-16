@@ -4,9 +4,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import permission_classes
 import re
 from django.middleware.csrf import get_token
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+    def enforce_csrf(self, request):
+        return None
 
 @api_view(['GET'])
 def get_csrf(request):
@@ -97,13 +102,25 @@ def login_user(request):
         return Response({"error": "Invalid username or password"}, status=400)
 
 
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])  
+# def user_profile(request):
+#     return Response({
+#         "username": request.user.username,
+#         "message": "You are authenticated"
+#     })
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])  
+@permission_classes([IsAuthenticated])
 def user_profile(request):
+    # Используем CsrfExemptSessionAuthentication, чтобы не требовать CSRF
+    user_profile.authentication_classes = [CsrfExemptSessionAuthentication]
     return Response({
+        "id": request.user.id,
         "username": request.user.username,
+        "email": request.user.email,
         "message": "You are authenticated"
     })
+
 
 
 @api_view(['POST'])

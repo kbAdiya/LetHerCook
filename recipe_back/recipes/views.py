@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
+from .filters import RecipeFilter
 
 from .models import (
     Recipe,
@@ -29,8 +30,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['category__name']
+    filterset_class = RecipeFilter
     search_fields = ['name', 'recipe_ingredients__ingredient__name']
+    # filterset_fields = ['category__name']
+    # search_fields = ['name', 'recipe_ingredients__ingredient__name']
 
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()

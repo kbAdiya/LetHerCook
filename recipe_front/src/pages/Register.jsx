@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles/auth.css"
+import { register } from "../services/authService";
+import "../styles/auth.css";
+
 function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -10,32 +12,17 @@ function Register() {
 
   function handleRegister(e) {
     e.preventDefault();
-
-    fetch("http://127.0.0.1:8000/api/users/register/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ 
-        username, 
-        email, 
-        password, 
-        password_confirm: passwordConfirm 
-      }),
-    })
-      .then(res => {
-        return res.json().then(data => {
-          if (res.ok) {
-            if (data.success || data.message) {
-              alert("Успешно зарегистрирован! Пожалуйста, войдите.");
-              navigate("/login");
-            }
-          } else {
-            alert(data.error || "Ошибка при регистрации");
-          }
-        });
+    register({ username, email, password, passwordConfirm })
+      .then(data => {
+        if (data.success) {
+          alert("Успешно зарегистрирован! Пожалуйста, войдите.");
+          navigate("/login");
+        } else {
+          alert(data.error || "Ошибка при регистрации");
+        }
       })
-      .catch(error => {
-        console.error("Error:", error);
+      .catch(err => {
+        console.error(err);
         alert("Ошибка при регистрации. Попробуйте еще раз.");
       });
   }

@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'users.middleware.DisableCSRFForAPI',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -137,9 +138,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
-# Allow all origins in development (remove in production)
-CORS_ALLOW_ALL_ORIGINS = True
+# Must be False when allowing credentials; origin is validated above
+CORS_ALLOW_ALL_ORIGINS = False
 
+# Enable cookies on cross-origin requests from allowed origins
 CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings for API
@@ -152,8 +154,9 @@ CSRF_TRUSTED_ORIGINS = [
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 1000,  # Large page size to return many recipes
+
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        'users.authentication.CsrfExemptSessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
@@ -165,7 +168,20 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer', 
     ],
 }
-CSRF_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SAMESITE = "Lax"
+# CSRF_COOKIE_SAMESITE = "Lax"
+# SESSION_COOKIE_SAMESITE = "Lax"
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
+
+SESSION_COOKIE_SECURE = False 
 CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+
+# Lax позволяет передавать куки при навигации, но запрещает на сторонних сайтах
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+# Чтобы куки работали корректно на локальном хосте
+SESSION_COOKIE_DOMAIN = None 
+
+# Время жизни сессии (2 недели), чтобы не вылетало сразу
+SESSION_COOKIE_AGE = 1209600

@@ -1,0 +1,90 @@
+/* Centered search panel + 4-column recipe grid */
+
+.recipeSearchPage {
+  padding: 28px 16px 40px;
+  background: #9a9a9c; 
+  min-height: calc(100vh - 80px);
+}
+
+.recipeSearchPanelWrap {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 24px;
+}
+
+.recipeSearchPanel {
+  width: min(1120px, 100%);
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 45%, #ea580c 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 20px 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.recipeSearchClear {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(17, 24, 39, 0.18);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.recipeSearchClear:hover {
+  background: rgba(17, 24, 39, 0.28);
+}
+
+.dietToggle {
+  display: inline-flex;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.dietToggle button {
+  border: 0;
+  background: transparent;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  font-size: 15px;
+}
+
+.dietToggle button.isActive {
+  background: rgba(129, 67, 0, 0.92);
+  color: #fff;
+}
+
+.recipeSearchInput {
+  flex: 1;
+  min-width: 280px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 16px;
+}
+
+.recipeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+
+
+.recipeEmpty {
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+  font-size: 25px;
+}
+

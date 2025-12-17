@@ -13,7 +13,7 @@ function About() {
       <main className="about-main">
         <section className="about-hero">
           <div className="about-copy">
-            <p className="about-kicker">A BIT</p>
+            
             <h1 className="about-title">About us</h1>
             <p className="about-description">
               We&apos;re on a mission to make cooking easier and more accessible by helping you discover amazing recipes

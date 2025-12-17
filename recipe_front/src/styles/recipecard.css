@@ -1,0 +1,139 @@
+
+
+ .recipeCard {
+  border: none; 
+  border-radius: 20px; 
+  background: #efeeee; 
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.recipeCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.recipeCardMedia {
+  width: 100%;
+  height: 220px;
+  object-fit: cover; 
+  transition: transform 0.5s ease;
+}
+
+.recipeCard:hover .recipeCardMedia {
+  transform: scale(1.05); 
+}
+
+.recipeCardBody {
+  padding: 20px; 
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.recipeCardTitle {
+  margin: 0;
+  font-size: 1.75rem; 
+  font-weight: 800; 
+  color: #1f2937;
+  line-height: 1.2;
+}
+
+.recipeCardDesc {
+  margin: 0;
+  color: #232324;
+  font-size: 1.5rem; 
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+
+.favoriteBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 0;
+}
+
+.favoriteBtn .heart {
+  font-size: 32px; 
+  color: black;    
+  transition: color 0.2s, transform 0.2s;
+}
+
+.favoriteBtn.active .heart {
+  color: red;      
+}
+
+.favoriteBtn:hover .heart {
+  transform: scale(1.2); 
+}
+
+.favoriteBtn:focus {
+  outline: none;
+}
+
+
+.detailsBtn {
+  margin-top: auto;
+  display: inline-block;
+  text-align: center;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f97316;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: background 0.2s;
+}
+
+.detailsBtn:hover {
+  background: #ea580c;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+}
+
+
+
+.recipeCardHeader {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;           
+  gap: 10px;
+}
+
+
+.favoriteBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: static;
+  padding: 0;
+  display: flex;  
+  align-items: center;
+}
+
+.favoriteBtn .heart {
+  font-size: 32px; 
+  color: rgb(124, 3, 148); 
+  transition: color 0.2s, transform 0.2s;
+  line-height: 1;   
+}
+
+
+.recipeCardTitle {
+  margin: 0;
+  font-size: 1.75rem; 
+  font-weight: 800; 
+  color: #1f2937;
+  line-height: 1.2;
+  flex: 1; 
+}

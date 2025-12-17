@@ -52,10 +52,9 @@ export function getAllRecipes(filters = {}) {
     params.append("ingredients", cleanedSearch);
   }
 
-  // Фильтр Vegan
-  if (filters.isVegan) {
-    params.append("is_vegan", "true");
-  }
+  // Meat/Vegan filter (API expects is_vegan=true/false)
+  if (filters.isVegan === true) params.append("is_vegan", "true");
+  if (filters.isVegan === false) params.append("is_vegan", "false");
 
   // --- НОВОЕ: Фильтр по категории ---
   // Если мы нажали кнопку категории, добавляем ?category__name=breakfast

@@ -66,6 +66,7 @@ import RecipeDetail from "./pages/RecipeDetail";
 import { AuthProvider } from "./context/AuthContext";
 import About from "./components/About";
 import Categories from "./pages/CategoryPage";
+import ContactUs from "./components/ContactUs";
 function App() {
   // УДАЛЯЕМ useState, useEffect и функции logout/getStatus отсюда.
   // Всё это теперь живет внутри AuthProvider.
@@ -85,6 +86,7 @@ function App() {
             
             <Route path="/register" element={<Register />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contactus" element={<ContactUs />} />
             {/* У Profile тоже можно убрать проп user, если переписать Profile на useAuth */}
             <Route path="/profile" element={<Profile />} />
             

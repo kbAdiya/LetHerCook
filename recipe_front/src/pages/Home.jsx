@@ -13,9 +13,13 @@
 import { Navigate } from "react-router-dom"; // Импорт редиректа
 import RecipeSearch from "../components/RecipeSearch";
 import { useAuth } from "../context/AuthContext";
+import { useTranslate } from "../i18n/useTranslate";
+
 
 function Home() {
   const { user } = useAuth();
+  const { t } = useTranslate();
+
 
   if (!user) {
     return <Navigate to="/" replace />;
@@ -23,8 +27,8 @@ function Home() {
 
   return (
     <div>
-      <h2>Welcome {user.username}!</h2>
-      <p>This is the home page.</p>
+      <h2>{t("welcome")} {user.username}!</h2>
+      <p>{t("homeDescription")}</p>
       <RecipeSearch />
     </div>
   );

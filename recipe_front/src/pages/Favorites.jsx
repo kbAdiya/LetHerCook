@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { getFavorites } from "../services/favoriteService";
 import RecipeCard from "../components/RecipeCard";
+import { useTranslate } from "../i18n/useTranslate";
+
 
 function Favorites() {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslate();
 
   useEffect(() => {
     getFavorites()
@@ -23,11 +26,11 @@ function Favorites() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>{t("loading")}</div>;
 
   return (
     <div>
-      <h2>My Favorite Recipes</h2>
+      <h2>{t("myFavorites")}</h2>
       <div className="recipe-grid">
         {favorites.length > 0 ? (
           favorites.map(recipe => (
@@ -40,7 +43,7 @@ function Favorites() {
             />
           ))
         ) : (
-          <p>No favorites yet.</p>
+          <p>{t("noFavorites")}</p>
         )}
       </div>
     </div>

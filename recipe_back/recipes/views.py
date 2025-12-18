@@ -31,7 +31,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = RecipeFilter
-    search_fields = ['name', 'recipe_ingredients__ingredient__name']
+    search_fields = [
+        'name_en',
+        'name_ru',
+        'name_kz',
+        'recipe_ingredients__ingredient__name_en',
+        'recipe_ingredients__ingredient__name_ru',
+        'recipe_ingredients__ingredient__name_kz',
+    ]
     # filterset_fields = ['category__name']
     # search_fields = ['name', 'recipe_ingredients__ingredient__name']
 

@@ -3,12 +3,15 @@ import { getCategories, getAllRecipes } from "../services/recipeService";
 import { getFavorites } from "../services/favoriteService"; // Для красных сердечек
 import { useAuth } from "../context/AuthContext";
 import RecipeCard from "../components/RecipeCard";
+import { useTranslate } from "../i18n/useTranslate";
+
 
 function Categories() {
   const [categories, setCategories] = useState([]); // Список кнопок
   const [recipes, setRecipes] = useState([]);       // Список рецептов
   const [activeCategory, setActiveCategory] = useState("All"); // Какая кнопка нажата прямо сейчас
-  
+  const { t } = useTranslate();
+
   // Для сердечек
   const [favoriteIds, setFavoriteIds] = useState([]);
   const { user } = useAuth();
@@ -55,7 +58,7 @@ function Categories() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Categories</h2>
+      <h2>{t("categories")}</h2>
 
       {/* Панель кнопок категорий */}
       <div style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
@@ -73,7 +76,7 @@ function Categories() {
             fontWeight: "bold"
           }}
         >
-          All Categories
+          {t("allCategories")}
         </button>
 
         {/* Кнопки из бэкенда */}
@@ -108,7 +111,7 @@ function Categories() {
             />
           ))
         ) : (
-          <p>No recipes found in this category.</p>
+          <p>{t("noRecipesInCategory")}</p>
         )}
       </div>
     </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/authService";
 import "../styles/auth.css";
+import { useTranslate } from "../i18n/useTranslate";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -9,61 +10,62 @@ function Register() {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const navigate = useNavigate();
+  const { t } = useTranslate();
 
   function handleRegister(e) {
     e.preventDefault();
     register({ username, email, password, passwordConfirm })
       .then(data => {
         if (data.success) {
-          alert("Успешно зарегистрирован! Пожалуйста, войдите.");
+          alert(t("registerSuccess"));
           navigate("/login");
         } else {
-          alert(data.error || "Ошибка при регистрации");
+          alert(data.error || t("registerError"));
         }
       })
       .catch(err => {
         console.error(err);
-        alert("Ошибка при регистрации. Попробуйте еще раз.");
+        alert(t("registerErrorGeneric"));
       });
   }
 
   return (
     <div className="auth-container">
-      <h2>Register</h2>
+      <h2>{t("register")}</h2>
       <form onSubmit={handleRegister}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder={t("username")}
           value={username}
           onChange={e => setUsername(e.target.value)}
           required
         />
         <input
           type="email"
-          placeholder="Email"
+          placeholder={t("email")}
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
         />
         <input
           type="password"
-          placeholder="Password (min 12 chars, uppercase, lowercase, number, special)"
+          placeholder={t("passwordHint")}
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
         />
         <input
           type="password"
-          placeholder="Confirm Password"
+          placeholder={t("confirmPassword")}
           value={passwordConfirm}
           onChange={e => setPasswordConfirm(e.target.value)}
           required
         />
-        <button type="submit">Register</button>
+        <button type="submit">{t("register")}</button>
       </form>
 
       <p>
-        Already have an account? <a href="/login">Login</a>
+        {t("haveAccount")} <a href="/login">{t("login")}</a>
       </p>
     </div>
   );

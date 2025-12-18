@@ -1,33 +1,58 @@
 from django.db import models
 from django.conf import settings
-from django.db import models
 
+# ======================
+# CATEGORY
+# ======================
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name_en = models.CharField(max_length=100)
+    name_ru = models.CharField(max_length=100)
+    name_kz = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return self.name_en
 
+# ======================
+# INGREDIENT
+# ======================
 class Ingredient(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name_en = models.CharField(max_length=100, unique=True)
+    name_ru = models.CharField(max_length=100)
+    name_kz = models.CharField(max_length=100)
     is_meat = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.name_en
 
+# ======================
+# RECIPE
+# ======================
 class Recipe(models.Model):
-    name = models.CharField(max_length=200)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    name_en = models.CharField(max_length=200)
+    name_ru = models.CharField(max_length=200)
+    name_kz = models.CharField(max_length=200)
+
+    description_en = models.TextField(null=True, blank=True)
+    description_ru = models.TextField(null=True, blank=True)
+    description_kz = models.TextField(null=True, blank=True)
+
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True
+    )
     photo = models.URLField(max_length=500, null=True, blank=True)  # ссылка на картинку
-    description = models.TextField(null=True, blank=True)
+
     is_vegan = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return self.name_en
 
     def _compute_is_vegan(self):
         """True when recipe has no meat ingredients."""
-        return not self.recipe_ingredients.filter(ingredient__is_meat=True).exists()
+        return not self.recipe_ingredients.filter(
+            ingredient__is_meat=True
+            ).exists()
 
     def refresh_is_vegan(self):
         """
@@ -45,16 +70,34 @@ class Recipe(models.Model):
         super().save(*args, **kwargs)
         self.refresh_is_vegan()
 
+
+# ======================
+# RECIPE INGREDIENT (M2M)
+# ======================
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='recipe_ingredients')
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name='ingredient_recipes')
-    quantity = models.CharField(max_length=100, null=True, blank=True)  # например, "2 столовые ложки", "500 г"
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='recipe_ingredients'
+    )
+
+    ingredient = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+        related_name='ingredient_recipes'
+    )
+
+    quantity = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True
+    )
 
     class Meta:
         unique_together = ('recipe', 'ingredient')
 
     def __str__(self):
-        return f"{self.recipe.name} - {self.ingredient.name} ({self.quantity})"
+        return f"{self.recipe.name_en} - {self.ingredient.name_en} ({self.quantity})"
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -65,13 +108,28 @@ class RecipeIngredient(models.Model):
         super().delete(*args, **kwargs)
         recipe.refresh_is_vegan()
 
+
+# ======================
+# DIRECTION
+# ======================
 class Direction(models.Model):
-    recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE, related_name='direction')
-    instruction = models.TextField()
+    recipe = models.OneToOneField(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='direction'
+    )
+
+    instruction_en = models.TextField()
+    instruction_ru = models.TextField()
+    instruction_kz = models.TextField()
 
     def __str__(self):
-        return f"{self.recipe.name} - instruction"
+        return f"{self.recipe.name_en} - instruction"
 
+
+# ======================
+# FAVORITE
+# ======================
 class Favorite(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -89,5 +147,5 @@ class Favorite(models.Model):
         unique_together = ('user', 'recipe')
 
     def __str__(self):
-        return f"{self.user} ❤️ {self.recipe.name}"
+        return f"{self.user} ❤️ {self.recipe.name_en}"
 

@@ -4,12 +4,14 @@ import { login } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 import { getStatus } from "../services/authService";
 import "../styles/auth.css";
+import { useTranslate } from "../i18n/useTranslate";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const { t } = useTranslate();
 
   // function handleSubmit(e) {
   //   e.preventDefault();
@@ -39,7 +41,7 @@ function handleSubmit(e) {
           return getStatus(); 
         } else {
           // Если сервер вернул ошибку в data.error
-          throw new Error(data.error || "Ошибка входа");
+          throw new Error(data.error || t("loginError"));
         }
       })
       .then(userData => {
@@ -52,32 +54,32 @@ function handleSubmit(e) {
       })
       .catch(err => {
         console.error(err);
-        alert(err.message || "Ошибка при входе. Проверьте данные.");
+        alert(err.message || t("loginErrorGeneric"));
       });
   }
   return (
     <div className="auth-container">
-      <h2>Login</h2>
+      <h2>{t("login")}</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder={t("username")}
           value={username}
           onChange={e => setUsername(e.target.value)}
           required
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder={t("password")}
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">{t("login")}</button>
       </form>
 
       <p>
-        Don't have an account? <a href="/register">Register</a>
+        {t("noAccount")} <a href="/register">{t("register")}</a>
       </p>
     </div>
   );

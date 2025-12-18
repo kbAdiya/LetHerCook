@@ -1,8 +1,10 @@
 import React from "react";
 import emailjs from "emailjs-com";
 import "../styles/contact.css";
+import { useTranslate } from "../i18n/useTranslate";
 
 function ContactUs() {
+  const { t } = useTranslate();
   const sendEmail = (e) => {
     e.preventDefault();
 
@@ -14,12 +16,12 @@ function ContactUs() {
     )
     .then(
       () => {
-        alert("Message sent successfully!");
+        alert(t("messageSent"));
         e.target.reset();
       },
       (error) => {
         console.error(error);
-        alert("Failed to send message(");
+        alert(t("messageFailed"));
       }
     );
   };
@@ -30,49 +32,49 @@ function ContactUs() {
 
         {/* LEFT SIDE */}
         <div className="contact-left">
-          <h3>Contact Information</h3>
+          <h3>{t("contactInfo")}</h3>
           <p>📞 +7 (777) 123 45 67</p>
           <p>✉️ lethercook@gmail.com</p>
-          <p>📍 Almaty, Kazakhstan</p>
+          <p>📍 {t("location")}</p>
         </div>
 
         
         <div className="contact-right">
-          <h1>CONTACT US</h1>
+          <h1>{t("contact")}</h1>
           <p className="contact-subtitle">
-            Questions or remarks? <br />
-            Feel free to contact us anytime 💛
+            {t("contactSubtitle1")} <br />
+            {t("contactSubtitle2")}
           </p>
 
           <form onSubmit={sendEmail} className="contact-form">
             <input
               type="text"
               name="from_name"
-              placeholder="Your name"
+              placeholder={t("yourName")}
               required
             />
 
             <input
               type="email"
               name="from_email"
-              placeholder="Your email"
+              placeholder={t("yourEmail")}
               required
             />
 
             <input
               type="text"
               name="subject"
-              placeholder="Subject"
+              placeholder={t("subject")}
               required
             />
 
             <textarea
               name="message"
-              placeholder="Your message"
+              placeholder={t("yourMessage")}
               required
             />
 
-            <button type="submit">Send Message</button>
+            <button type="submit">{t("sendMessage")}</button>
           </form>
         </div>
 

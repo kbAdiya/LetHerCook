@@ -2,23 +2,23 @@ import { useNavigate } from "react-router-dom";
 
 import "../styles/about.css";
 import aboutimg from"../assets/image 1.png"
+import { useTranslate } from "../i18n/useTranslate";
+
 
 function About() {
+const { t } = useTranslate();
 
 
   return (
     <div className="about-page">
-     
-
+    
       <main className="about-main">
         <section className="about-hero">
           <div className="about-copy">
             
-            <h1 className="about-title">About us</h1>
+            <h1 className="about-title">{t("about")}</h1>
             <p className="about-description">
-              We&apos;re on a mission to make cooking easier and more accessible by helping you discover amazing recipes
-              using the ingredients you already have at home. LetHerCook turns everyday pantry items into dishes you
-              actually want to eat.
+              {t("aboutDescription")}
             </p>
           </div>
           <div className="about-media">

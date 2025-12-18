@@ -67,8 +67,12 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; 
 import { useFavorite } from "../hooks/useFavorite";
 import "../styles/recipecard.css";
+import { useTranslate } from "../i18n/useTranslate";
+
 
 function RecipeCard({ recipe, initialIsFavorite = false }) {
+  const { t } = useTranslate();
+
   const { user } = useAuth(); // Чтобы проверить, вошел ли юзер
   
   // Передаем ID и начальное состояние в хук
@@ -95,14 +99,19 @@ function RecipeCard({ recipe, initialIsFavorite = false }) {
           className={`favoriteBtn ${isFavorite ? "active" : ""}`}
           onClick={toggleFavorite}
         >
-          {loading ? "..." : isFavorite ? <span className="heart">♥</span> : <span className="heart">♡</span>}
+          {loading
+            ? t("loading")
+            : isFavorite
+              ? <span className="heart">♥</span>
+              : <span className="heart">♡</span>
+          }
         </button>
       )}
     </div>
     
-    <p className="recipeCardDesc">{recipe.description || "No description"}</p>
+    <p className="recipeCardDesc">{recipe.description || t("noDescription")}</p>
     <Link to={`/recipes/${recipe.id}`} className="detailsBtn">
-      Details
+       {t("details")}
     </Link>
   </div>
 </div>

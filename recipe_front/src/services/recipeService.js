@@ -61,6 +61,10 @@ export function getAllRecipes(filters = {}) {
   if (filters.category__name) {
     params.append("category__name", filters.category__name);
   }
+  
+  if (filters.lang) {
+    params.append("lang", filters.lang);
+  }
 
   return fetch(`${API_URL}/recipes/?${params.toString()}`, {
     credentials: "include",

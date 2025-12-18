@@ -6,10 +6,16 @@ import { getAllRecipes } from "../services/recipeService";
 import { getFavorites } from "../services/favoriteService"; 
 import { useAuth } from "../context/AuthContext";
 import "../styles/recipesearch.css";
+import { useLanguage } from "../context/LanguageContext";
+import { useTranslate } from "../i18n/useTranslate";
+
 
 function RecipeSearch() {
   const [recipes, setRecipes] = useState([]);
   
+  const { lang } = useLanguage();
+  const { t } = useTranslate();
+
   
   const [favoriteIds, setFavoriteIds] = useState([]);
   const { user } = useAuth(); 
@@ -39,22 +45,23 @@ function RecipeSearch() {
 
   
   useEffect(() => {
-    const query = searchParams.get("search") || "";
-    const isVeganParam = searchParams.get("is_vegan"); // "true" | "false" | null
-    const isVegan = isVeganParam === "true" ? true : isVeganParam === "false" ? false : undefined;
+  const query = searchParams.get("search") || "";
+  const isVeganParam = searchParams.get("is_vegan");
+  const isVegan = isVeganParam === "true" ? true : isVeganParam === "false" ? false : undefined;
 
-    getAllRecipes({ search: query, isVegan })
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setRecipes(data);
-        } else if (data.results && Array.isArray(data.results)) {
-          setRecipes(data.results);
-        } else {
-          setRecipes([]);
-        }
-      })
-      .catch((err) => console.error("Error fetching recipes:", err));
-  }, [searchParams]);
+  getAllRecipes({ search: query, isVegan, lang })
+    .then((data) => {
+      if (Array.isArray(data)) {
+        setRecipes(data);
+      } else if (data.results && Array.isArray(data.results)) {
+        setRecipes(data.results);
+      } else {
+        setRecipes([]);
+      }
+    })
+    .catch((err) => console.error("Error fetching recipes:", err));
+}, [searchParams, lang]);
+
 -
   useEffect(() => {
     if (!user) {
@@ -92,21 +99,21 @@ function RecipeSearch() {
               className={diet === "all" ? "isActive" : ""}
               onClick={() => setDiet("all")}
             >
-              All
+              {t("all")}
             </button>
             <button
               type="button"
               className={diet === "meat" ? "isActive" : ""}
               onClick={() => setDiet("meat")}
             >
-              Has meat
+             {t("hasMeat")}
             </button>
             <button
               type="button"
               className={diet === "no_meat" ? "isActive" : ""}
               onClick={() => setDiet("no_meat")}
             >
-              No meat
+              {t("noMeat")}
             </button>
           </div>
 
@@ -114,14 +121,14 @@ function RecipeSearch() {
           <input
             className="recipeSearchInput"
             type="text"
-            placeholder="Enter ingredients like potato,milk"
+            placeholder={t("searchPlaceholder")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
           {/* Always-visible Clear button (right side) */}
           <button className="recipeSearchClear" onClick={handleClear} type="button">
-            Clear
+            {t("clear")}
           </button>
         </div>
       </div>
@@ -140,7 +147,7 @@ function RecipeSearch() {
       </div>
 
       {recipes.length === 0 && (
-        <p className="recipeEmpty">No recipes found.</p>
+        <p className="recipeEmpty">{t("noRecipes")}</p>
       )}
     </div>
   );

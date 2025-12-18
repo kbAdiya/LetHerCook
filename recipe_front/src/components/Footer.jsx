@@ -4,6 +4,8 @@ import twitterIcon from "../assets/icons/twitter.svg";
 import instagramIcon from "../assets/icons/instagram.svg";
 import pinterestIcon from "../assets/icons/pinterest.svg";
 import "../styles/footer.css";
+import { useTranslate } from "../i18n/useTranslate";
+
 
 const SOCIAL_LINKS = [
   { label: "YouTube", href: "https://youtube.com", icon: youtubeIcon },
@@ -13,6 +15,8 @@ const SOCIAL_LINKS = [
 ];
 
 function Footer() {
+  const { t } = useTranslate();
+
   return (
     <footer className="footer">
       <div className="footer-content">
@@ -20,12 +24,12 @@ function Footer() {
           <img src={logo} alt="LetHerCook logo" className="footer-logo" />
           <div>
             <div className="footer-brand-name">LetHerCook</div>
-            <p className="footer-brand-copy">Discover recipes built for the ingredients you already have.</p>
+            <p className="footer-brand-copy">{t("footerDescription")}</p>
           </div>
         </div>
 
         <div className="footer-info">
-          <div className="footer-section-title">Information:</div>
+          <div className="footer-section-title">{t("information")}:</div>
           <div className="footer-socials">
             {SOCIAL_LINKS.map(({ label, href, icon }) => (
               <a key={label} href={href} className="footer-social" target="_blank" rel="noreferrer" aria-label={label}>
@@ -36,7 +40,7 @@ function Footer() {
         </div>
 
         <div className="footer-contact">
-          <div className="footer-section-title">Contact us</div>
+          <div className="footer-section-title">{t("contact")}</div>
           <div className="footer-contact-detail">lethercook@gmail.com</div>
           <div className="footer-contact-detail">+7 777 665 8543</div>
         </div>

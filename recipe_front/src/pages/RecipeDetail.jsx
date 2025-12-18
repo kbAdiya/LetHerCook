@@ -67,18 +67,22 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getRecipeById } from "../services/recipeService";
 import "../styles/recipedetail.css"
+import { useTranslate } from "../i18n/useTranslate";
+
 
 function RecipeDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
+  const { t } = useTranslate();
+
 
   useEffect(() => {
     getRecipeById(id).then(setRecipe);
   }, [id]);
 
   if (!recipe) {
-    return <div className="loading-screen">Loading Deliciousness...</div>;
+    return <div className="loading-screen">{t("loadingRecipe")}</div>;
   }
 
   return (
@@ -100,10 +104,10 @@ function RecipeDetail() {
         {/* Category and Diet Badges */}
         <div className="info-bar">
           <span className="badge badge-category">
-            {recipe.category?.name || "Recipe"}
+            {recipe.category?.name || t("recipe")}
           </span>
           <span className={`badge ${recipe.is_vegan ? 'badge-vegan' : 'badge-nonvegan'}`}>
-            {recipe.is_vegan ? "🌿 Vegan" : "🍖 Non-Vegan"}
+            {recipe.is_vegan ? `🌿 ${t("vegan")}` : `🍖 ${t("nonVegan")}`}
           </span>
         </div>
 
@@ -114,7 +118,7 @@ function RecipeDetail() {
         <div className="recipe-grid">
           
           <aside className="ingredients-section">
-            <h3 className="section-label">Ingredients</h3>
+            <h3 className="section-label">{t("ingredients")}</h3>
             <ul className="ingredients-list">
               {recipe.ingredients?.map((ing) => (
                 <li key={ing.id} className="ingredient-item">
@@ -126,13 +130,13 @@ function RecipeDetail() {
           </aside>
 
           <main className="instructions-section">
-            <h3 className="section-label">Instructions</h3>
+            <h3 className="section-label">{t("instructions")}</h3>
             <div className="instructions-card">
               {recipe.direction?.instruction}
             </div>
           </main>
 <button className="btn-back" onClick={() => navigate(-1)}>
-          <span>←</span> Back to Recipes
+          <span>←</span> {t("backToRecipes")}
         </button>
         </div>
       </div>

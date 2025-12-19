@@ -68,6 +68,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getRecipeById } from "../services/recipeService";
 import "../styles/recipedetail.css"
 import { useTranslate } from "../i18n/useTranslate";
+import { useLanguage } from "../context/LanguageContext";
+
 
 
 function RecipeDetail() {
@@ -75,11 +77,14 @@ function RecipeDetail() {
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
   const { t } = useTranslate();
+  const { lang } = useLanguage();
+
 
 
   useEffect(() => {
-    getRecipeById(id).then(setRecipe);
-  }, [id]);
+  getRecipeById(id, lang).then(setRecipe);
+}, [id, lang]);
+
 
   if (!recipe) {
     return <div className="loading-screen">{t("loadingRecipe")}</div>;

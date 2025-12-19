@@ -71,8 +71,8 @@ export function getAllRecipes(filters = {}) {
   }).then((res) => res.json());
 }
 
-export function getRecipeById(id) {
-  return fetch(`${API_URL}/recipes/${id}/`, { credentials: "include" }).then(
-    (res) => res.json()
-  );
+export function getRecipeById(id, lang = "en") {
+  return fetch(`${API_URL}/recipes/${id}/?lang=${lang}`, {
+    credentials: "include",
+  }).then(res => res.json());
 }

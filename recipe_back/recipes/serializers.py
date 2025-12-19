@@ -101,11 +101,12 @@ class RecipeSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
-    direction = DirectionSerializer(required=False)
+    direction = serializers.SerializerMethodField()
     ingredients = RecipeIngredientSerializer(
         source='recipe_ingredients',  # related_name из модели RecipeIngredient
         many=True,
         read_only=True
+
     )
 
     class Meta:
@@ -129,6 +130,16 @@ class RecipeSerializer(serializers.ModelSerializer):
     def get_description(self, obj):
         lang = get_lang(self.context.get('request'))
         return getattr(obj, f'description_{lang}', obj.description_en)
+    
+    def get_direction(self, obj):
+        if not hasattr(obj, 'direction'):
+            return None
+
+        serializer = DirectionSerializer(
+            obj.direction,
+            context=self.context
+        )
+        return serializer.data
 
     def create(self, validated_data):
         direction_data = validated_data.pop("direction", None)
@@ -141,4 +152,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             Direction.objects.create(recipe=recipe, **direction_data)
 
         return recipe
+    
+    
 

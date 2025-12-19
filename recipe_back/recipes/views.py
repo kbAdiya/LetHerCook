@@ -39,6 +39,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
         'recipe_ingredients__ingredient__name_ru',
         'recipe_ingredients__ingredient__name_kz',
     ]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
     # filterset_fields = ['category__name']
     # search_fields = ['name', 'recipe_ingredients__ingredient__name']
 

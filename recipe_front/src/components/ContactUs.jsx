@@ -30,7 +30,7 @@ function ContactUs() {
    <div className="contact-page">
       <div className="contact-card">
 
-        {/* LEFT SIDE */}
+        
         <div className="contact-left">
           <h3>{t("contactInfo")}</h3>
           <p>📞 +7 (777) 123 45 67</p>

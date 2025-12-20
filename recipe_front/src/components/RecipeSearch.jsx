@@ -23,12 +23,12 @@ function RecipeSearch() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialSearch = searchParams.get("search") || "";
-  const initialIsVeganParam = searchParams.get("is_vegan"); // "true" | "false" | null
+  const initialIsVeganParam = searchParams.get("is_vegan"); 
   const initialDiet =
     initialIsVeganParam === "true" ? "no_meat" : initialIsVeganParam === "false" ? "meat" : "all";
 
   const [searchTerm, setSearchTerm] = useState(initialSearch);
-  const [diet, setDiet] = useState(initialDiet); // "all" | "meat" | "no_meat"
+  const [diet, setDiet] = useState(initialDiet); 
 
 
   useEffect(() => {
@@ -81,7 +81,6 @@ function RecipeSearch() {
       .catch(console.error);
   }, [user]);
 
-  // --- Обработчики ---
   const handleClear = () => {
     setSearchTerm("");
     setDiet("all");
@@ -89,10 +88,10 @@ function RecipeSearch() {
 
   return (
     <div className="recipeSearchPage">
-      {/* Centered Search Panel */}
+      
       <div className="recipeSearchPanelWrap">
         <div className="recipeSearchPanel">
-          {/* 3-state diet toggle (left side near Clear) */}
+         
           <div className="dietToggle" role="group" aria-label="Diet filter">
             <button
               type="button"
@@ -117,7 +116,7 @@ function RecipeSearch() {
             </button>
           </div>
 
-          {/* Big centered input */}
+          
           <input
             className="recipeSearchInput"
             type="text"
@@ -126,21 +125,19 @@ function RecipeSearch() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
-          {/* Always-visible Clear button (right side) */}
+        
           <button className="recipeSearchClear" onClick={handleClear} type="button">
             {t("clear")}
           </button>
         </div>
       </div>
 
-      {/* Recipes List */}
       <div className="recipeGrid">
         {recipes.map((recipe) => (
           <RecipeCard 
             key={recipe.id} 
             recipe={recipe} 
-            // 4. ВОТ ЗДЕСЬ МАГИЯ:
-            // Проверяем, есть ли ID этого рецепта в списке любимых
+       
             initialIsFavorite={favoriteIds.includes(recipe.id)}
           />
         ))}

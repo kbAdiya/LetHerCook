@@ -65,10 +65,16 @@ const translations = {
     registerSuccess: "Successfully registered! Please log in.",
     registerError: "Registration failed",
     registerErrorGeneric: "Registration failed. Please try again.",
+    startAddingRecipes: "Start adding new recipes",
+    browseRecipes:"browse recipes",
+    recipesSaved: "recipes Saved",
+    uploadAvatar: "Upload profile picture"
+
 
   },
 
   ru: {
+    startAddingRecipes: " Начни добавлять рецепты",
     home: "Главная",
     about: "О нас",
     categories: "Категории",
@@ -134,6 +140,10 @@ const translations = {
     registerSuccess: "Вы успешно зарегистрировались! Пожалуйста, войдите.",
     registerError: "Ошибка при регистрации",
     registerErrorGeneric: "Ошибка при регистрации. Попробуйте еще раз.",
+     browseRecipes:"просмотреть рецепты",
+    recipesSaved: "рецепты сохранены",
+    uploadAvatar: "Загрузить картинку"
+    
 
   },
 
@@ -203,6 +213,10 @@ const translations = {
     registerSuccess: "Тіркелу сәтті аяқталды! Кіруіңізді сұраймыз.",
     registerError: "Тіркелу қатесі",
     registerErrorGeneric: "Тіркелу кезінде қате болды. Қайта көріңіз.",
+    startAddingRecipes: "Жана рецептерды кос",
+     browseRecipes:"рецепттерді қарау",
+    recipesSaved: "сақталған рецепттер",
+    uploadAvatar: "Аватар сурет жүктеу"
 
   },
 };

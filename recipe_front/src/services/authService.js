@@ -1,6 +1,6 @@
 import { USERS_API } from "./apiConfig";
 
-// Получение статуса пользователя
+
 export function getStatus() {
   return fetch(`${USERS_API}/status/`, {
     credentials: "include",
@@ -10,7 +10,7 @@ export function getStatus() {
   });
 }
 
-// Login
+
 export function login(username, password) {
   return fetch(`${USERS_API}/login/`, {
     method: "POST",
@@ -20,7 +20,7 @@ export function login(username, password) {
   }).then(res => res.json());
 }
 
-// Logout
+
 export function logout() {
   return fetch(`${USERS_API}/logout/`, {
     method: "POST",

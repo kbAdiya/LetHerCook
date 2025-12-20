@@ -121,7 +121,7 @@
 }
 
 .navbar-logout {
-  background: #ff6b6b;
+  background: #f7cf4b;
   color: white;
   padding: 8px 16px;
   border-radius: 8px;
@@ -151,11 +151,41 @@
   margin-left: 20px;
 }
 
-@media (max-width: 1024px) {
-  .navbar-container { 
-    padding: 0 20px; 
-  }
-  .navbar-menu { 
-    display: none; 
-  }
+
+
+.navbar-language {
+  display: flex;
+  align-items: center;
 }
+
+
+.navbar-language-select {
+  appearance: none; 
+  background-color: #f7c948; 
+  color: #1f1f1f;
+  border: 2px solid transparent;
+  padding: 6px 32px 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231f1f1f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+}
+
+
+.navbar-language-select:hover {
+  background-color: #f7c948; 
+  transform: translateY(-1px);
+}
+
+.navbar-language-select:focus {
+  outline: none;
+  border-color: #1f1f1f;
+}
+

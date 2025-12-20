@@ -39,7 +39,7 @@ function Navbar() {
 
           <div className="navbar-actions">
 
-            {/* Language switcher */}
+            
             <div className="navbar-language">
               <select
                 value={lang}

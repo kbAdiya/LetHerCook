@@ -1,8 +1,9 @@
-import { Navigate } from "react-router-dom"; // 1. Импортируем Navigate
-import { useAuth } from "../context/AuthContext"; // 2. Импортируем контекст
+import { Navigate } from "react-router-dom"; 
+import { useAuth } from "../context/AuthContext"; 
 import RecipeSearch from "../components/RecipeSearch";
 import { useTranslate } from "../i18n/useTranslate";
-
+import "../styles/laning.css"
+import { Link } from "react-router-dom";
 function Landing() {
   const { user } = useAuth();
   const { t } = useTranslate();
@@ -13,9 +14,15 @@ function Landing() {
 
   return (
     <>
-      <h1>{t("landingTitle")}</h1>
-      <p>{t("landingSubtitle")}</p>
-  
+    <div className="home-container">
+      <div className="overlay">
+      <h1 className="welcome-text">{t("landingTitle")}</h1>
+       
+      <p className="home-description"><Link to="/register" className="signup-link">{t("landingSubtitle")}</Link></p>
+      
+      
+      </div>
+    </div>
       <RecipeSearch />
     </>
   );

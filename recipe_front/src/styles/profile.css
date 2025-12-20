@@ -1,0 +1,90 @@
+
+.profile-page {
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 3rem;
+  background: #fff8f0;
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+  font-family: 'Inter', sans-serif;
+}
+
+.profile-header {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #f79c4b;
+  margin-bottom: 2rem;
+}
+
+.profile-info {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.profile-avatar-wrapper {
+  flex-shrink: 0;
+}
+
+.profile-avatar-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #f7c948;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.profile-text {
+  flex: 1;
+}
+
+.profile-text h2 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.profile-text p {
+  margin: 6px 0;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.status-badge {
+  display: inline-block;
+  margin: 12px 0;
+  padding: 6px 16px;
+  background-color: #d3f0d3;
+  color: #2a7f2a;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.profile-upload {
+  margin-top: 20px;
+}
+
+.profile-upload label {
+  display: inline-block;
+  padding: 14px 28px;
+  background-color: #f79c4b;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.profile-upload label:hover {
+  background-color: #ff9c49;
+  transform: translateY(-2px);
+}
+
+#avatar-upload {
+  display: none;
+}

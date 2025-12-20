@@ -1,20 +1,9 @@
-// import RecipeSearch from "../components/RecipeSearch";
-// import { useAuth } from "../context/AuthContext";
-// function Home() {
-//    const { user } = useAuth();
-//   return  <div>
-//       <h2>Welcome {user ? user.username : "Guest"}!</h2>
-//       <p>This is the home page.</p>
-//       <RecipeSearch />;
-//     </div> 
-// }
 
-// export default Home;
-import { Navigate } from "react-router-dom"; // Импорт редиректа
+import { Navigate } from "react-router-dom"; 
 import RecipeSearch from "../components/RecipeSearch";
 import { useAuth } from "../context/AuthContext";
 import { useTranslate } from "../i18n/useTranslate";
-
+import "../styles/hom.css"
 
 function Home() {
   const { user } = useAuth();
@@ -27,8 +16,17 @@ function Home() {
 
   return (
     <div>
-      <h2>{t("welcome")} {user.username}!</h2>
-      <p>{t("homeDescription")}</p>
+    <div className="home-container">
+      <div className="overlay">
+        <h1 className="welcome-text">
+          {t("welcome")} {user.username}!
+        </h1>
+        <p className="home-description">
+          {t("homeDescription")}
+        </p>
+        
+      </div>
+      </div>
       <RecipeSearch />
     </div>
   );

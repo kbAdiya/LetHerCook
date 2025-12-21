@@ -4,19 +4,33 @@ import { getFavorites } from "../services/favoriteService";
 import { useAuth } from "../context/AuthContext";
 import RecipeCard from "../components/RecipeCard";
 import { useTranslate } from "../i18n/useTranslate";
-
+import { useLanguage } from "../context/LanguageContext";
 
 function Categories() {
   const [categories, setCategories] = useState([]); 
   const [recipes, setRecipes] = useState([]);       
   const [activeCategory, setActiveCategory] = useState("All"); 
   const { t } = useTranslate();
-
+ const { lang } = useLanguage();
  
   const [favoriteIds, setFavoriteIds] = useState([]);
   const { user } = useAuth();
 
- 
+   useEffect(() => {
+    getCategories(lang).then(data => {
+      if (data.results) {
+        setCategories(data.results);
+        
+        setActiveCategory("All");
+      } else if (Array.isArray(data)) {
+        setCategories(data);
+        setActiveCategory("All");
+      }
+    }).catch(err => {
+      console.error("Error loading categories:", err);
+    });
+  }, [lang]);
+
   useEffect(() => {
     getCategories().then(data => {
    
@@ -32,15 +46,15 @@ function Categories() {
     
     
     if (activeCategory !== "All") {
-      params.category__name = activeCategory;
+      params.category = activeCategory;
     }
-
+    params.lang = lang;
     getAllRecipes(params).then(data => {
       
       const list = Array.isArray(data) ? data : (data.results || []);
       setRecipes(list);
     });
-  }, [activeCategory]); 
+  }, [activeCategory, lang]); 
 
 
   useEffect(() => {

@@ -2,8 +2,17 @@ import { API_URL } from "./apiConfig";
 
 
 
-export function getCategories() {
-  return fetch(`${API_URL}/categories/`, {
+// export function getCategories() {
+//   return fetch(`${API_URL}/categories/`, {
+//     credentials: "include",
+//   }).then((res) => {
+//     if (!res.ok) throw new Error("Failed to fetch categories");
+//     return res.json();
+//   });
+// }
+
+export function getCategories(lang = "en") {
+  return fetch(`${API_URL}/categories/?lang=${lang}`, {
     credentials: "include",
   }).then((res) => {
     if (!res.ok) throw new Error("Failed to fetch categories");
@@ -23,8 +32,8 @@ export function getAllRecipes(filters = {}) {
   if (filters.isVegan === true) params.append("is_vegan", "true");
   if (filters.isVegan === false) params.append("is_vegan", "false");
 
-  if (filters.category__name) {
-    params.append("category__name", filters.category__name);
+  if (filters.category) {
+    params.append("category", filters.category);
   }
   
   if (filters.lang) {

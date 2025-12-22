@@ -89,6 +89,11 @@ export const UNITS = {
     ru: "литры",
     kz: "литр",
   },
+  heads: {
+    en: "heads",
+    ru: "головки",
+    kz: "бас",
+  } 
 };
 
 export const UNIT_ALIASES = {
@@ -124,4 +129,7 @@ export const UNIT_ALIASES = {
 
 
   portions: "portion",
+
+  heads: "heads",
+
 };

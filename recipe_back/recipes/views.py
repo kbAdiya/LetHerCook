@@ -14,7 +14,8 @@ from .models import (
     Category,
     RecipeIngredient,
     Direction,
-    Favorite
+    Favorite, 
+    Cuisine
 )
 
 from .serializers import (
@@ -22,7 +23,8 @@ from .serializers import (
     IngredientSerializer,
     CategorySerializer,
     RecipeIngredientSerializer,
-    DirectionSerializer
+    DirectionSerializer, 
+    CuisineSerializer,
 )
 
 
@@ -54,6 +56,10 @@ class IngredientViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+class CuisineViewSet(viewsets.ModelViewSet):
+    queryset = Cuisine.objects.all()
+    serializer_class = CuisineSerializer
 
 class RecipeIngredientViewSet(viewsets.ModelViewSet):
     queryset = RecipeIngredient.objects.all()

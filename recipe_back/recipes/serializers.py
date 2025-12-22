@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Recipe, Ingredient, Category, RecipeIngredient, Direction
+from .models import Recipe, Ingredient, Category, RecipeIngredient, Direction, Cuisine
 
 def get_lang(request):
     if not request:
@@ -152,6 +152,15 @@ class RecipeSerializer(serializers.ModelSerializer):
             Direction.objects.create(recipe=recipe, **direction_data)
 
         return recipe
+    
+class CuisineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cuisine
+        fields = ['id', 'name_en', 'name_ru', 'name_kz']
+
+    def get_name(self, obj):
+        lang = get_lang(self.context.get('request'))
+        return getattr(obj, f'name_{lang}', obj.name_en)
     
     
 

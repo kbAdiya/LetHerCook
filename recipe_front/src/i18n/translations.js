@@ -68,9 +68,16 @@ const translations = {
     startAddingRecipes: "Start adding new recipes",
     browseRecipes:"browse recipes",
     recipesSaved: "recipes Saved",
-    uploadAvatar: "Upload profile picture"
+    uploadAvatar: "Upload profile picture",
+    cuisine: "Cuisine",
+    allCuisines: "All cuisines",
 
-
+    italian: "Italian",
+    greek: "Greek",
+    eastern_european: "Eastern European",
+    central_asian: "Central Asian",
+    asian: "Asian",
+    international: "International",
   },
 
   ru: {
@@ -142,8 +149,16 @@ const translations = {
     registerErrorGeneric: "Ошибка при регистрации. Попробуйте еще раз.",
      browseRecipes:"просмотреть рецепты",
     recipesSaved: "рецепты сохранены",
-    uploadAvatar: "Загрузить картинку"
-    
+    uploadAvatar: "Загрузить картинку", 
+    cuisine: "Кухня",
+    allCuisines: "Все кухни",
+
+    italian: "Итальянская",
+    greek: "Греческая",
+    eastern_european: "Восточно-европейская",
+    central_asian: "Центрально-азиатская",
+    asian: "Азиатская",
+    international: "Международная",
 
   },
 
@@ -216,8 +231,16 @@ const translations = {
     startAddingRecipes: "Жана рецептерды кос",
      browseRecipes:"рецепттерді қарау",
     recipesSaved: "сақталған рецепттер",
-    uploadAvatar: "Аватар сурет жүктеу"
+    uploadAvatar: "Аватар сурет жүктеу",
+    cuisine: "Асхана",
+    allCuisines: "Барлық асханалар",
 
+    italian: "Италиялық",
+    greek: "Грек",
+    eastern_european: "Шығыс Еуропа",
+    central_asian: "Орталық Азия",
+    asian: "Азиялық",
+    international: "Халықаралық",
   },
 };
 

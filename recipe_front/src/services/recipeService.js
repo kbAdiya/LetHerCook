@@ -35,6 +35,10 @@ export function getAllRecipes(filters = {}) {
   if (filters.category) {
     params.append("category", filters.category);
   }
+
+  if (filters.cuisine) {
+    params.append("cuisine", filters.cuisine);
+  }
   
   if (filters.lang) {
     params.append("lang", filters.lang);

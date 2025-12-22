@@ -9,7 +9,8 @@ from .views import (
     DirectionViewSet,
     AddToFavoriteView,
     RemoveFromFavoriteView,
-    FavoriteListView
+    FavoriteListView, 
+    CuisineViewSet,
 )
 
 router = DefaultRouter()
@@ -18,6 +19,7 @@ router.register(r'ingredients', IngredientViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'recipe-ingredients', RecipeIngredientViewSet)
 router.register(r'directions', DirectionViewSet)
+router.register(r'cuisines', CuisineViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

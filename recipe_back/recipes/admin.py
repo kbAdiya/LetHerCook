@@ -5,7 +5,8 @@ from .models import (
     Recipe,
     RecipeIngredient,
     Direction,
-    Favorite
+    Favorite, 
+    Cuisine,
 )
 
 admin.site.register(Category)
@@ -14,3 +15,4 @@ admin.site.register(Recipe)
 admin.site.register(RecipeIngredient)
 admin.site.register(Direction)
 admin.site.register(Favorite)
+admin.site.register(Cuisine)

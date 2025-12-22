@@ -6,16 +6,24 @@ class RecipeFilter(filters.FilterSet):
     ingredients = filters.CharFilter(method='filter_ingredients')
     category = filters.CharFilter(method='filter_category')
     is_vegan = filters.BooleanFilter()
+    cuisine = filters.CharFilter(method='filter_cuisine')
 
     class Meta:
         model = Recipe
-        fields = ['category', 'is_vegan', 'ingredients']
+        fields = ['category', 'is_vegan', 'ingredients', 'cuisine']
 
     def filter_category(self, queryset, name, value):
         return queryset.filter(
             Q(category__name_en__iexact=value) |
             Q(category__name_ru__iexact=value) |
             Q(category__name_kz__iexact=value)
+        ).distinct()
+    
+    def filter_cuisine(self, queryset, name, value):
+        return queryset.filter(
+            Q(cuisine__name_en__iexact=value) |
+            Q(cuisine__name_ru__iexact=value) |
+            Q(cuisine__name_kz__iexact=value)
         ).distinct()
 
     def filter_ingredients(self, queryset, name, value):

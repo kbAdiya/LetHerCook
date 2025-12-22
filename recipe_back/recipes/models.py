@@ -45,6 +45,14 @@ class Recipe(models.Model):
 
     is_vegan = models.BooleanField(default=True)
 
+    cuisine = models.ForeignKey(
+        "Cuisine",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='recipes'
+    )
+
     def __str__(self):
         return self.name_en
 
@@ -148,4 +156,13 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f"{self.user} ❤️ {self.recipe.name_en}"
+
+
+class Cuisine(models.Model):
+    name_en = models.CharField(max_length=100, unique=True)
+    name_ru = models.CharField(max_length=100, unique=True)
+    name_kz = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name_en
 

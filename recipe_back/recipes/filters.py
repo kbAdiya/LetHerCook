@@ -26,7 +26,15 @@ class RecipeFilter(filters.FilterSet):
             queryset = queryset.filter(
                 Q(recipe_ingredients__ingredient__name_en__icontains=n) |
                 Q(recipe_ingredients__ingredient__name_ru__icontains=n) |
-                Q(recipe_ingredients__ingredient__name_kz__icontains=n)
-            )
+                Q(recipe_ingredients__ingredient__name_kz__icontains=n) |
+                
+                Q(name_en__icontains=n) |
+                Q(name_ru__icontains=n) |
+                Q(name_kz__icontains=n) |
+                Q(description_en__icontains=n) |
+                Q(description_ru__icontains=n) |
+                Q(description_kz__icontains=n)
+        )
+            
         
         return queryset.distinct()

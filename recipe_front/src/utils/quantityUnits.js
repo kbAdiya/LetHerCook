@@ -83,6 +83,12 @@ export const UNITS = {
     ru: "кг",
     kz: "кг",
   },
+
+  liters: {
+    en: "liters",
+    ru: "литры",
+    kz: "литр",
+  },
 };
 
 export const UNIT_ALIASES = {
@@ -95,6 +101,8 @@ export const UNIT_ALIASES = {
   kg: "kg",
   kilogram: "kg",
   kilograms: "kg",
+
+  liters: "liters",
   
   milliliter: "ml",
   milliliters: "ml",

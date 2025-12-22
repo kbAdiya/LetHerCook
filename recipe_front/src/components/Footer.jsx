@@ -42,7 +42,7 @@ function Footer() {
         <div className="footer-contact">
           <div className="footer-section-title">{t("contact")}</div>
           <div className="footer-contact-detail">lethercook@gmail.com</div>
-          <div className="footer-contact-detail">+7 777 665 8543</div>
+          <div className="footer-contact-detail">+7 777 123 4567</div>
         </div>
       </div>
     </footer>

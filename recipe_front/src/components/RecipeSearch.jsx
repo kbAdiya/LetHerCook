@@ -34,7 +34,7 @@ function RecipeSearch() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       const params = {};
-      if (searchTerm) params.search = searchTerm;
+      if (searchTerm) params.ingredients = searchTerm;
       if (diet === "no_meat") params.is_vegan = "true";
       if (diet === "meat") params.is_vegan = "false";
       setSearchParams(params); 
@@ -45,7 +45,7 @@ function RecipeSearch() {
 
   
   useEffect(() => {
-  const query = searchParams.get("search") || "";
+  const query = searchParams.get("ingredients") || "";
   const isVeganParam = searchParams.get("is_vegan");
   const isVegan = isVeganParam === "true" ? true : isVeganParam === "false" ? false : undefined;
 

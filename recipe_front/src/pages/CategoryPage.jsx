@@ -19,7 +19,6 @@ function Categories() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeCuisine, setActiveCuisine] = useState("All");
 
-  /* ---------- LOAD CATEGORIES (как раньше) ---------- */
   useEffect(() => {
     getCategories(lang)
       .then(data => {
@@ -30,12 +29,12 @@ function Categories() {
       .catch(err => console.error(err));
   }, [lang]);
 
-  /* ---------- LOAD CUISINES (UI only) ---------- */
+
   useEffect(() => {
   fetch("http://127.0.0.1:8000/api/cuisines/")
     .then(res => res.json())
     .then(data => {
-      // DRF всегда отдаёт paginated response
+    
       setCuisines(data.results || []);
     })
     .catch(err => {
@@ -43,16 +42,16 @@ function Categories() {
     });
 }, []);
 
-  /* ---------- LOAD RECIPES (ТОЛЬКО КАТЕГОРИИ, КАК РАНЬШЕ) ---------- */
+
   useEffect(() => {
     const params = { lang };
 
     if (activeCategory !== "All") {
-      params.category = activeCategory; // ← ВАЖНО
+      params.category = activeCategory; 
     }
 
     if (activeCuisine !== "All") {
-      params.cuisine = activeCuisine; // ← ВАЖНО
+      params.cuisine = activeCuisine; 
     }
 
     getAllRecipes(params).then(data => {
@@ -61,7 +60,6 @@ function Categories() {
     });
   }, [activeCategory, lang, activeCuisine]);
 
-  /* ---------- FAVORITES ---------- */
   useEffect(() => {
     if (!user) {
       setFavoriteIds([]);
@@ -80,7 +78,6 @@ function Categories() {
     <div style={{ padding: "20px" }}>
       <h2>{t("categories")}</h2>
 
-      {/* ---------- CATEGORIES (РАБОТАЮТ КАК РАНЬШЕ) ---------- */}
       <div style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
         <button
           onClick={() => setActiveCategory("All")}
@@ -89,7 +86,7 @@ function Categories() {
             borderRadius: "20px",
             border: "none",
             cursor: "pointer",
-            backgroundColor: activeCategory === "All" ? "#007bff" : "#e0e0e0",
+            backgroundColor: activeCategory === "All" ? "#f4b20bff" : "#e0e0e0",
             color: activeCategory === "All" ? "white" : "black",
             fontWeight: "bold"
           }}
@@ -107,7 +104,7 @@ function Categories() {
             border: "none",
             cursor: "pointer",
             backgroundColor:
-              activeCategory === cat.name ? "#007bff" : "#e0e0e0",
+              activeCategory === cat.name ? "#fdd10cff" : "#e0e0e0",
             color:
               activeCategory === cat.name ? "white" : "black"
           }}
@@ -117,7 +114,7 @@ function Categories() {
       ))}
       </div>
 
-      {/* ---------- CUISINE (НЕ ЛОМАЕТ НИЧЕГО) ---------- */}
+     
       <h2 style={{ marginTop: "20px" }}>{t("cuisine")}</h2>
 
       <div style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
@@ -128,7 +125,7 @@ function Categories() {
             borderRadius: "20px",
             border: "none",
             cursor: "pointer",
-            backgroundColor: activeCuisine === "All" ? "#28a745" : "#e0e0e0",
+            backgroundColor: activeCuisine === "All" ? "#f4b20bff" : "#e0e0e0",
             color: activeCuisine === "All" ? "white" : "black",
             fontWeight: "bold"
           }}
@@ -139,14 +136,14 @@ function Categories() {
         {cuisines.map(c => (
           <button
             key={c.id}
-            onClick={() => setActiveCuisine(c.name_en)}  // UI only
+            onClick={() => setActiveCuisine(c.name_en)}  
             style={{
               padding: "10px 20px",
               borderRadius: "20px",
               border: "none",
               cursor: "pointer",
               backgroundColor:
-                activeCuisine === c.name_en ? "#28a745" : "#e0e0e0",
+                activeCuisine === c.name_en ? "#fdd10cff" : "#e0e0e0",
               color:
                 activeCuisine === c.name_en ? "white" : "black"
             }}
@@ -156,7 +153,7 @@ function Categories() {
         ))}
       </div>
 
-      {/* ---------- RECIPES GRID ---------- */}
+      
       <div
         style={{
           display: "grid",
